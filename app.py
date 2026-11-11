@@ -313,8 +313,8 @@ def create_paypal_order():
             "application_context": {
                 "brand_name": "ShopMate AI",
                 "user_action": "PAY_NOW",
-                "return_url": "http://localhost:8501/?paypal=success",
-                "cancel_url": "http://localhost:8501/?paypal=cancel"
+                "return_url": "https://shopmate-ai-sahil.streamlit.app/?paypal=success",
+                "cancel_url": "https://shopmate-ai-sahil.streamlit.app/?paypal=cancel"
             }
         },
         timeout=30
