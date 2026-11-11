@@ -1,0 +1,450 @@
+[
+    {
+        "id": 1,
+        "name": "HP Pavilion Laptop",
+        "category": "Electronics",
+        "brand": "HP",
+        "price": 55000,
+        "description": "16GB RAM, 512GB SSD, suitable for programming",
+        "specifications": {
+            "ram_gb": 16,
+            "storage_gb": 512
+        }
+    },
+    {
+        "id": 2,
+        "name": "Dell Inspiron Laptop",
+        "category": "Electronics",
+        "brand": "Dell",
+        "price": 58000,
+        "description": "16GB RAM, 512GB SSD, suitable for productivity",
+        "specifications": {
+            "ram_gb": 16,
+            "storage_gb": 512
+        }
+    },
+    {
+        "id": 3,
+        "name": "Samsung Galaxy S25",
+        "category": "Electronics",
+        "brand": "Samsung",
+        "price": 65000,
+        "description": "Smartphone with excellent camera and performance"
+    },
+    {
+        "id": 4,
+        "name": "Apple iPad",
+        "category": "Electronics",
+        "brand": "Apple",
+        "price": 35000,
+        "description": "Tablet suitable for entertainment and productivity"
+    },
+    {
+        "id": 5,
+        "name": "Sony Bravia Smart TV",
+        "category": "Electronics",
+        "brand": "Sony",
+        "price": 45000,
+        "description": "4K Smart LED television"
+    },
+    {
+        "id": 6,
+        "name": "Men's Casual T-Shirt",
+        "category": "Fashion",
+        "brand": "Puma",
+        "price": 999,
+        "description": "Comfortable cotton casual t-shirt"
+    },
+    {
+        "id": 7,
+        "name": "Women's Denim Jacket",
+        "category": "Fashion",
+        "brand": "Levis",
+        "price": 2499,
+        "description": "Classic blue denim jacket"
+    },
+    {
+        "id": 8,
+        "name": "Men's Running Shoes",
+        "category": "Fashion",
+        "brand": "Adidas",
+        "price": 2999,
+        "description": "Lightweight sports running shoes"
+    },
+    {
+        "id": 9,
+        "name": "Casual Sneakers",
+        "category": "Fashion",
+        "brand": "Puma",
+        "price": 1999,
+        "description": "Everyday casual sneakers"
+    },
+    {
+        "id": 10,
+        "name": "Men's Formal Shirt",
+        "category": "Fashion",
+        "brand": "Arrow",
+        "price": 1499,
+        "description": "Formal office wear shirt"
+    },
+    {
+        "id": 11,
+        "name": "LG Washing Machine",
+        "category": "Home Appliances",
+        "brand": "LG",
+        "price": 22000,
+        "description": "Fully automatic washing machine"
+    },
+    {
+        "id": 12,
+        "name": "Samsung Refrigerator",
+        "category": "Home Appliances",
+        "brand": "Samsung",
+        "price": 28000,
+        "description": "Double door refrigerator"
+    },
+    {
+        "id": 13,
+        "name": "Philips Air Fryer",
+        "category": "Home Appliances",
+        "brand": "Philips",
+        "price": 7500,
+        "description": "Air fryer for healthier cooking"
+    },
+    {
+        "id": 14,
+        "name": "Dyson Vacuum Cleaner",
+        "category": "Home Appliances",
+        "brand": "Dyson",
+        "price": 25000,
+        "description": "Cordless vacuum cleaner"
+    },
+    {
+        "id": 15,
+        "name": "Voltas Air Conditioner",
+        "category": "Home Appliances",
+        "brand": "Voltas",
+        "price": 32000,
+        "description": "Split air conditioner"
+    },
+    {
+        "id": 16,
+        "name": "Sony Wireless Headphones",
+        "category": "Accessories",
+        "brand": "Sony",
+        "price": 4999,
+        "description": "Wireless headphones with noise cancellation"
+    },
+    {
+        "id": 17,
+        "name": "Apple AirPods",
+        "category": "Accessories",
+        "brand": "Apple",
+        "price": 12999,
+        "description": "Wireless Bluetooth earbuds"
+    },
+    {
+        "id": 18,
+        "name": "Logitech Wireless Mouse",
+        "category": "Accessories",
+        "brand": "Logitech",
+        "price": 799,
+        "description": "Ergonomic wireless computer mouse"
+    },
+    {
+        "id": 19,
+        "name": "Samsung Galaxy Watch",
+        "category": "Accessories",
+        "brand": "Samsung",
+        "price": 8999,
+        "description": "Smartwatch with fitness tracking"
+    },
+    {
+        "id": 20,
+        "name": "JBL Bluetooth Speaker",
+        "category": "Accessories",
+        "brand": "JBL",
+        "price": 2999,
+        "description": "Portable wireless Bluetooth speaker"
+    },
+    {
+        "id": 21,
+        "name": "Wooden Study Table",
+        "category": "Furniture",
+        "brand": "Home Centre",
+        "price": 6500,
+        "description": "Modern wooden study table"
+    },
+    {
+        "id": 22,
+        "name": "Ergonomic Office Chair",
+        "category": "Furniture",
+        "brand": "Green Soul",
+        "price": 8500,
+        "description": "Comfortable ergonomic office chair"
+    },
+    {
+        "id": 23,
+        "name": "Wooden Bookshelf",
+        "category": "Furniture",
+        "brand": "Wakefit",
+        "price": 4500,
+        "description": "Modern bookshelf with multiple shelves"
+    },
+    {
+        "id": 24,
+        "name": "Queen Size Bed",
+        "category": "Furniture",
+        "brand": "Wakefit",
+        "price": 18000,
+        "description": "Modern wooden queen size bed"
+    },
+    {
+        "id": 25,
+        "name": "Bedside Table",
+        "category": "Furniture",
+        "brand": "Home Centre",
+        "price": 2500,
+        "description": "Compact bedside storage table"
+    },
+    {
+        "id": 26,
+        "name": "Samsung Galaxy A35",
+        "category": "Electronics",
+        "brand": "Samsung",
+        "price": 26999,
+        "description": "Smartphone with 8GB RAM and 128GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 128
+        }
+    },
+    {
+        "id": 27,
+        "name": "Samsung Galaxy M35",
+        "category": "Electronics",
+        "brand": "Samsung",
+        "price": 24999,
+        "description": "Smartphone with 8GB RAM and 128GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 128
+        }
+    },
+    {
+        "id": 28,
+        "name": "Redmi Note 14 Pro",
+        "category": "Electronics",
+        "brand": "Redmi",
+        "price": 23999,
+        "description": "Smartphone with 8GB RAM and 128GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 128
+        }
+    },
+    {
+        "id": 29,
+        "name": "OnePlus Nord CE",
+        "category": "Electronics",
+        "brand": "OnePlus",
+        "price": 26999,
+        "description": "Smartphone with 8GB RAM and 128GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 128
+        }
+    },
+    {
+        "id": 30,
+        "name": "Motorola Edge 50 Fusion",
+        "category": "Electronics",
+        "brand": "Motorola",
+        "price": 22999,
+        "description": "Smartphone with 8GB RAM and 128GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 128
+        }
+    },
+    {
+        "id": 31,
+        "name": "iQOO Z9",
+        "category": "Electronics",
+        "brand": "iQOO",
+        "price": 19999,
+        "description": "Smartphone with 8GB RAM and 128GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 128
+        }
+    },
+    {
+        "id": 32,
+        "name": "Realme 13 Pro",
+        "category": "Electronics",
+        "brand": "Realme",
+        "price": 24999,
+        "description": "Smartphone with 8GB RAM and 256GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 256
+        }
+    },
+    {
+        "id": 33,
+        "name": "Samsung Galaxy S25 FE",
+        "category": "Electronics",
+        "brand": "Samsung",
+        "price": 54999,
+        "description": "Smartphone with 8GB RAM and 256GB storage; illustrative demo specification",
+        "specifications": {
+            "ram_gb": 8,
+            "storage_gb": 256
+        }
+    },
+    {
+        "id": 34,
+        "name": "Lenovo IdeaPad Slim Laptop",
+        "category": "Electronics",
+        "brand": "Lenovo",
+        "price": 56999,
+        "description": "Laptop with 16GB RAM and 512GB SSD",
+        "specifications": {
+            "ram_gb": 16,
+            "storage_gb": 512
+        }
+    },
+    {
+        "id": 35,
+        "name": "ASUS Vivobook Laptop",
+        "category": "Electronics",
+        "brand": "ASUS",
+        "price": 59999,
+        "description": "Laptop with 16GB RAM and 512GB SSD",
+        "specifications": {
+            "ram_gb": 16,
+            "storage_gb": 512
+        }
+    },
+    {
+        "id": 36,
+        "name": "Men's Polo T-Shirt",
+        "category": "Fashion",
+        "brand": "U.S. Polo Assn.",
+        "price": 1299,
+        "description": "Men's casual cotton polo t-shirt"
+    },
+    {
+        "id": 37,
+        "name": "Women's Casual Kurta",
+        "category": "Fashion",
+        "brand": "Biba",
+        "price": 1799,
+        "description": "Women's everyday printed casual kurta"
+    },
+    {
+        "id": 38,
+        "name": "Men's Casual Sneakers",
+        "category": "Fashion",
+        "brand": "Nike",
+        "price": 3999,
+        "description": "Men's everyday casual sneakers"
+    },
+    {
+        "id": 39,
+        "name": "Women's Running Shoes",
+        "category": "Fashion",
+        "brand": "Puma",
+        "price": 3499,
+        "description": "Women's lightweight running shoes"
+    },
+    {
+        "id": 40,
+        "name": "Samsung Single Door Refrigerator",
+        "category": "Home Appliances",
+        "brand": "Samsung",
+        "price": 18999,
+        "description": "Single door refrigerator for home use"
+    },
+    {
+        "id": 41,
+        "name": "Whirlpool Washing Machine",
+        "category": "Home Appliances",
+        "brand": "Whirlpool",
+        "price": 19999,
+        "description": "Fully automatic top load washing machine"
+    },
+    {
+        "id": 42,
+        "name": "Havells Ceiling Fan",
+        "category": "Home Appliances",
+        "brand": "Havells",
+        "price": 2799,
+        "description": "Energy-efficient ceiling fan for home use"
+    },
+    {
+        "id": 43,
+        "name": "IFB Microwave Oven",
+        "category": "Home Appliances",
+        "brand": "IFB",
+        "price": 8999,
+        "description": "Microwave oven for reheating and cooking"
+    },
+    {
+        "id": 44,
+        "name": "Samsung Galaxy Buds FE",
+        "category": "Accessories",
+        "brand": "Samsung",
+        "price": 6999,
+        "description": "Wireless Bluetooth earbuds"
+    },
+    {
+        "id": 45,
+        "name": "Logitech Wireless Keyboard",
+        "category": "Accessories",
+        "brand": "Logitech",
+        "price": 1499,
+        "description": "Wireless keyboard for desktop and laptop use"
+    },
+    {
+        "id": 46,
+        "name": "boAt Smartwatch",
+        "category": "Accessories",
+        "brand": "boAt",
+        "price": 2499,
+        "description": "Smartwatch with activity tracking"
+    },
+    {
+        "id": 47,
+        "name": "JBL Wired Earphones",
+        "category": "Accessories",
+        "brand": "JBL",
+        "price": 999,
+        "description": "Wired in-ear headphones for everyday listening"
+    },
+    {
+        "id": 48,
+        "name": "Compact Computer Desk",
+        "category": "Furniture",
+        "brand": "Wakefit",
+        "price": 5499,
+        "description": "Compact desk for a home study or work setup"
+    },
+    {
+        "id": 49,
+        "name": "Mesh Office Chair",
+        "category": "Furniture",
+        "brand": "Green Soul",
+        "price": 9999,
+        "description": "Mesh-back office chair for desk work"
+    },
+    {
+        "id": 50,
+        "name": "Three-Door Wardrobe",
+        "category": "Furniture",
+        "brand": "Home Centre",
+        "price": 15999,
+        "description": "Three-door wardrobe for bedroom storage"
+    }
+]
