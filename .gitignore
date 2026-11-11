@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Streamlit secrets and local configuration
+.streamlit/secrets.toml
+
+# Environment variables
+.env
+.env.*
+
+# Local PayPal order snapshots
+pending_paypal_orders/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
