@@ -1,5 +1,6 @@
 import streamlit as st
 import json
+import os
 import re
 import requests
 import uuid
@@ -24,100 +25,203 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
 
-/* Main application background */
+:root {
+    --ink: #132238;
+    --muted: #65758b;
+    --line: #e6edf3;
+    --paper: #ffffff;
+    --canvas: #f5f8fb;
+    --teal: #0e9f8a;
+    --teal-dark: #087c70;
+    --mint: #d8f5eb;
+}
+
 .stApp {
-    background-color: #f5f7fb;
+    background:
+        radial-gradient(ellipse at 8% 0%, rgba(202, 245, 230, .5), transparent 34rem),
+        var(--canvas);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
 }
 
-/* Main content area */
 .block-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-    max-width: 1250px;
+    max-width: 1380px;
+    padding-top: 1.4rem;
+    padding-bottom: 4rem;
 }
 
-/* Main headings */
-h1, h2, h3, h4, h5, h6 {
-    color: #172554 !important;
+h1, h2, h3, h4, h5, h6,
+.stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    color: var(--ink) !important;
+    font-family: 'Manrope', sans-serif !important;
+    letter-spacing: -.035em;
+}
+
+p, label, .stMarkdown { color: #334155; }
+.stCaption, [data-testid="stCaptionContainer"] { color: var(--muted) !important; }
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    min-height: 285px;
+    margin: .4rem 0 1.5rem;
+    padding: clamp(2rem, 5vw, 4.1rem);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 30px;
+    color: white;
+    background:
+        radial-gradient(circle at 80% 25%, rgba(22, 188, 159, .42), transparent 22rem),
+        linear-gradient(118deg, #10243a 0%, #173a50 56%, #086c68 100%);
+    box-shadow: 0 22px 54px rgba(16, 36, 58, .16);
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    right: 7%;
+    bottom: -205px;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 50%;
+    box-shadow: 0 0 0 28px rgba(255,255,255,.04), 0 0 0 58px rgba(255,255,255,.035);
+}
+
+.hero-copy { position: relative; z-index: 1; max-width: 720px; }
+.hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    margin-bottom: 1rem;
+    color: #b9f4e0;
+    font-size: .73rem;
     font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+.hero-copy h1 {
+    margin: 0 0 .7rem;
+    color: white !important;
+    font-size: clamp(2.5rem, 5vw, 4.2rem);
+    line-height: 1.04;
+}
+.hero-copy p {
+    max-width: 630px;
+    margin: 0;
+    color: rgba(240, 249, 255, .82);
+    font-size: 1.05rem;
+    line-height: 1.65;
+}
+.hero-aside {
+    position: relative;
+    z-index: 1;
+    min-width: 220px;
+    padding: 1.2rem 1.35rem;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 20px;
+    background: rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+}
+.hero-aside small { color: #b9f4e0; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.hero-step { display: flex; gap: .75rem; align-items: center; margin-top: .9rem; color: white; font-weight: 600; }
+.hero-step span {
+    display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+    color: #0d4a4a; background: #b9f4e0; font-size: .75rem; font-weight: 800;
 }
 
-/* Streamlit markdown headings */
-.stMarkdown h1,
-.stMarkdown h2,
-.stMarkdown h3,
-.stMarkdown h4,
-.stMarkdown h5,
-.stMarkdown h6 {
-    color: #172554 !important;
+.sample-product-visual {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 112px;
+    margin-bottom: .9rem;
+    padding: 1rem 1.2rem;
+    border-radius: 15px;
+    background: linear-gradient(125deg, #e1f5ed, #eff5fb 58%, #e1edf8);
+}
+.sample-product-visual span { font-size: 3rem; line-height: 1; }
+.sample-product-visual small {
+    padding: .4rem .7rem;
+    border: 1px solid rgba(14,159,138,.16);
+    border-radius: 999px;
+    color: #087c70;
+    background: rgba(255,255,255,.72);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
 }
 
-/* Sidebar headings */
-section[data-testid="stSidebar"] h1,
-section[data-testid="stSidebar"] h2,
-section[data-testid="stSidebar"] h3 {
-    color: #172554 !important;
+.section-kicker {
+    margin: 0 0 .25rem;
+    color: var(--teal-dark);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
 }
 
-/* Normal text */
-p, label, .stMarkdown {
-    color: #334155;
-}
-
-/* Buttons */
-.stButton > button {
-    background-color: #2563eb;
+.stButton > button, .stLinkButton > a {
+    min-height: 2.8rem;
+    border: 1px solid transparent;
+    border-radius: 12px;
     color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 0.55rem 1rem;
-    font-weight: 600;
-    transition: 0.2s ease;
+    background: var(--teal);
+    font-weight: 700;
+    transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
+    box-shadow: 0 5px 14px rgba(14, 159, 138, .16);
 }
-
-.stButton > button:hover {
-    background-color: #1d4ed8;
+.stButton > button:hover, .stLinkButton > a:hover {
+    border-color: transparent;
     color: white;
-    border: none;
+    background: var(--teal-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(14, 159, 138, .23);
 }
 
-/* Input fields */
-.stTextInput input,
-.stTextArea textarea {
-    border-radius: 10px;
-    border: 1px solid #cbd5e1;
+.stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"] > div {
+    border-radius: 12px;
+    border-color: #dbe5ec;
+    background-color: white;
+}
+.stTextArea textarea:focus, .stTextInput input:focus {
+    border-color: #35b8a1;
+    box-shadow: 0 0 0 3px rgba(53,184,161,.12);
 }
 
-/* Product and content containers */
 div[data-testid="stVerticalBlockBorderWrapper"] {
-    background-color: white;
-    border-radius: 14px;
-    border: 1px solid #e2e8f0;
-    padding: 8px;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper);
+    box-shadow: 0 7px 24px rgba(19, 34, 56, .045);
+    transition: transform .16s ease, box-shadow .16s ease;
+}
+div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    box-shadow: 0 13px 32px rgba(19, 34, 56, .085);
 }
 
-/* Success messages */
-div[data-testid="stAlert"] {
-    border-radius: 10px;
+div[data-testid="stMetric"] {
+    padding: .8rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255,255,255,.88);
 }
+div[data-testid="stMetricLabel"] { color: var(--muted); }
+div[data-testid="stMetricValue"] { color: var(--ink); font-family: 'Manrope', sans-serif; }
+div[data-testid="stAlert"] { border-radius: 14px; }
+hr { border-color: var(--line); margin: 1.5rem 0; }
 
-/* Horizontal dividers */
-hr {
-    border-color: #e2e8f0;
+@media (max-width: 760px) {
+    .hero { align-items: flex-start; flex-direction: column; padding: 1.7rem; border-radius: 22px; }
+    .hero-aside { width: 100%; }
 }
-
-/* Tables */
-div[data-testid="stTable"] {
-    background-color: white;
-    border-radius: 10px;
-}
-
-/* Captions */
-.stCaption {
-    color: #64748b;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -205,8 +309,14 @@ if "paypal_payment_success" not in st.session_state:
 if "paypal_payment_cancelled" not in st.session_state:
     st.session_state.paypal_payment_cancelled = False
 
+if "channel3_results" not in st.session_state:
+    st.session_state.channel3_results = None
 
+if "channel3_error" not in st.session_state:
+    st.session_state.channel3_error = None
 
+if "channel3_user_id" not in st.session_state:
+    st.session_state.channel3_user_id = str(uuid.uuid4())
 
 # --------------------------------------------------
 # 4. HELPER FUNCTIONS
@@ -258,6 +368,111 @@ def extract_json(response_text):
 def add_to_cart(product):
 
     st.session_state.cart.append(product)
+
+
+def product_icon(product):
+
+    category_icons = {
+        "Electronics": "⌘",
+        "Fashion": "✦",
+        "Home Appliances": "⌂",
+        "Accessories": "◈",
+        "Furniture": "▱"
+    }
+    return category_icons.get(product.get("category"), "✧")
+
+
+def get_channel3_api_key():
+
+    try:
+        return st.secrets.get("CHANNEL3_API_KEY") or os.getenv("CHANNEL3_API_KEY")
+    except Exception:
+        return os.getenv("CHANNEL3_API_KEY")
+
+
+def search_channel3(query, api_key, user_id):
+
+    response = requests.post(
+        "https://api.trychannel3.com/v1/search",
+        headers={
+            "x-api-key": api_key,
+            "x-user-id": user_id,
+            "Content-Type": "application/json"
+        },
+        json={
+            "query": query,
+            "limit": 6,
+            "config": {
+                "mode": "agentic"
+            }
+        },
+        timeout=30
+    )
+    response.raise_for_status()
+    payload = response.json()
+    if not isinstance(payload, dict):
+        raise ValueError("Channel3 returned an unexpected product response.")
+
+    results = payload.get("products")
+    if results is None:
+        results = payload.get("items")
+    if results is None:
+        results = payload.get("data", [])
+    if isinstance(results, dict):
+        results = results.get("products", results.get("items", []))
+    if not isinstance(results, list):
+        raise ValueError("Channel3 returned an unexpected product response.")
+    return results
+
+
+def best_channel3_offer(product):
+
+    offers = product.get("offers") or []
+    valid_offers = []
+    for offer in offers:
+        price = offer.get("price")
+        if not offer.get("url") or not isinstance(price, dict):
+            continue
+        try:
+            numeric_price = float(price.get("price"))
+        except (TypeError, ValueError):
+            continue
+        valid_offers.append((numeric_price, offer))
+
+    return min(valid_offers, key=lambda item: item[0])[1] if valid_offers else None
+
+
+def format_channel3_price(offer):
+
+    price = offer.get("price", {})
+    amount = price.get("price")
+    currency = price.get("currency", "")
+    if amount is None:
+        return "Price unavailable"
+
+    try:
+        amount = float(amount)
+    except (TypeError, ValueError):
+        return "Price unavailable"
+
+    symbol = {"INR": "₹", "USD": "$", "EUR": "€", "GBP": "£"}.get(currency)
+    formatted_amount = f"{amount:,.2f}".rstrip("0").rstrip(".")
+    return f"{symbol}{formatted_amount}" if symbol else f"{currency} {formatted_amount}".strip()
+
+
+@st.cache_data(ttl=86400, show_spinner=False)
+def get_usd_inr_reference_rate():
+
+    response = requests.get(
+        "https://api.frankfurter.dev/v2/rate/USD/INR",
+        timeout=10
+    )
+    response.raise_for_status()
+    rate_data = response.json()
+    rate = float(rate_data["rate"])
+    if rate <= 0:
+        raise ValueError("The USD to INR reference rate was invalid.")
+    return rate, rate_data.get("date")
 
 
 # --------------------------------------------------
@@ -565,14 +780,31 @@ elif paypal_result == "cancel":
 # 5. HEADER
 # --------------------------------------------------
 
-st.title("🛍️ ShopMate AI")
+st.markdown("""
+<section class="hero">
+  <div class="hero-copy">
+    <div class="hero-kicker">✦ ShopMate AI · your personal shopping guide</div>
+    <h1>Find what fits<br>your life.</h1>
+    <p>Tell us what matters. Get a thoughtful shortlist from your budget, preferences, and the products available.</p>
+  </div>
+  <div class="hero-aside">
+    <small>Your shopping, simplified</small>
+    <div class="hero-step"><span>1</span> Share what you need</div>
+    <div class="hero-step"><span>2</span> Compare good matches</div>
+    <div class="hero-step"><span>3</span> Try PayPal Sandbox checkout</div>
+  </div>
+</section>
+""", unsafe_allow_html=True)
 
-st.subheader("Your Personal AI Shopping Assistant")
+metric_columns = st.columns(3)
+with metric_columns[0]:
+    st.metric("Sample products", len(products))
+with metric_columns[1]:
+    st.metric("Product categories", len(valid_categories))
+with metric_columns[2]:
+    st.metric("PayPal demo checkout", "$1 USD · Sandbox")
 
-st.write(
-    "Tell us what you're looking for. "
-    "We'll find, compare and recommend suitable products."
-)
+st.divider()
 
 if st.session_state.paypal_payment_success:
 
@@ -617,11 +849,11 @@ if st.session_state.paypal_payment_success:
 
 st.divider()
 
-st.header("🤖 Ask ShopMate AI")
+st.markdown('<p class="section-kicker">01 · Personalized shopping</p>', unsafe_allow_html=True)
+st.header("What are you looking for?")
 
 st.write(
-    "Describe what you're looking for. "
-    "I'll understand your needs and help you find suitable products."
+    "Describe the item, budget, brand, or specifications. ShopMate will turn your request into a shortlist you can compare."
 )
 
 
@@ -1004,45 +1236,30 @@ if st.session_state.shopping_results:
     # 8A. DISPLAY UNDERSTOOD REQUIREMENTS
     # ----------------------------------------------
 
-    st.success("I've understood your requirements!")
+    st.markdown('<p class="section-kicker">Your brief · understood</p>', unsafe_allow_html=True)
+    st.subheader("A shortlist shaped around you")
 
-    st.subheader("Your Shopping Requirements")
-
-    st.write(
-        "**Category:**",
-        requirements["category"] or "Not identified"
-    )
-
-    st.write(
-        "**Product Type:**",
-        requirements["product_type"] or "Not specified"
-    )
-
-    st.write(
-        "**Brand Preference:**",
-        requirements["brand"] or "No preference"
-    )
-
-    st.write(
-        "**Minimum RAM:**",
-        f"{requirements['min_ram_gb']}GB"
-        if requirements["min_ram_gb"] is not None
-        else "Not specified"
-    )
-
-    st.write(
-        "**Minimum Storage:**",
-        f"{requirements['min_storage_gb']}GB"
-        if requirements["min_storage_gb"] is not None
-        else "Not specified"
-    )
-
-    st.write(
-        "**Maximum Budget:**",
-        f"₹{requirements['max_budget']:,}"
-        if requirements["max_budget"] is not None
-        else "Not specified"
-    )
+    requirement_columns = st.columns(3)
+    with requirement_columns[0]:
+        st.metric(
+            "Looking for",
+            requirements["product_type"] or requirements["category"] or "A good match"
+        )
+    with requirement_columns[1]:
+        st.metric(
+            "Budget",
+            f"₹{requirements['max_budget']:,}"
+            if requirements["max_budget"] is not None else "Flexible"
+        )
+    with requirement_columns[2]:
+        specs = []
+        if requirements["brand"]:
+            specs.append(requirements["brand"])
+        if requirements["min_ram_gb"] is not None:
+            specs.append(f'{requirements["min_ram_gb"]} GB RAM')
+        if requirements["min_storage_gb"] is not None:
+            specs.append(f'{requirements["min_storage_gb"]} GB storage')
+        st.metric("Preferences", " · ".join(specs) if specs else "Open to ideas")
 
     # ----------------------------------------------
     # 8B. DISPLAY MATCHING PRODUCTS
@@ -1070,6 +1287,13 @@ if st.session_state.shopping_results:
                 st.markdown(recommendation_explanation)
 
             with st.container(border=True):
+
+                st.markdown(
+                    '<div class="sample-product-visual">'
+                    f'<span>{product_icon(recommended_product)}</span>'
+                    '<small>Recommended match</small></div>',
+                    unsafe_allow_html=True
+                )
 
                 st.subheader(
                     recommended_product["name"]
@@ -1132,6 +1356,13 @@ if st.session_state.shopping_results:
 
                     with st.container(border=True):
 
+                        st.markdown(
+                            '<div class="sample-product-visual">'
+                            f'<span>{product_icon(product)}</span>'
+                            f'<small>{product["category"]}</small></div>',
+                            unsafe_allow_html=True
+                        )
+
                         st.subheader(product["name"])
 
                         st.caption(
@@ -1164,13 +1395,164 @@ if st.session_state.shopping_results:
         )
 
 
+st.divider()
+st.markdown('<p class="section-kicker">02 · Live marketplace</p>', unsafe_allow_html=True)
+st.header("Explore products across the web")
+st.write(
+    "Search live product listings, current offers, and retailer links with Channel3."
+)
+st.caption(
+    "Live offers use Channel3's default US/USD market. USD offers show an approximate ₹ equivalent using a daily reference rate; final price, shipping, and taxes may differ."
+)
+
+channel3_api_key = get_channel3_api_key()
+
+if not channel3_api_key:
+    with st.container(border=True):
+        st.markdown("#### Connect Channel3 product search")
+        st.write(
+            "Add a Channel3 API key as CHANNEL3_API_KEY in Streamlit Secrets to enable live products."
+        )
+        st.link_button(
+            "Get a free Channel3 API key",
+            "https://trychannel3.com/developers",
+            use_container_width=False
+        )
+else:
+    channel3_columns = st.columns([4, 1])
+    with channel3_columns[0]:
+        channel3_query = st.text_input(
+            "What should we find?",
+            value=user_request.strip(),
+            placeholder="Try: lightweight laptop for travel",
+            key="channel3_query"
+        )
+    with channel3_columns[1]:
+        st.write("")
+        st.write("")
+        search_live = st.button(
+            "Search live",
+            type="primary",
+            use_container_width=True,
+            key="search_channel3"
+        )
+
+    if search_live:
+        st.session_state.channel3_error = None
+        st.session_state.channel3_results = None
+        if not channel3_query.strip():
+            st.session_state.channel3_error = "Enter a product or shopping need to search."
+        else:
+            try:
+                with st.spinner("Finding live products and retailer offers..."):
+                    st.session_state.channel3_results = search_channel3(
+                        channel3_query.strip(),
+                        channel3_api_key,
+                        st.session_state.channel3_user_id
+                    )
+            except requests.RequestException as error:
+                error_response = getattr(error, "response", None)
+                status_code = getattr(error_response, "status_code", None)
+                suffix = f" (HTTP {status_code})" if status_code else ""
+                provider_detail = ""
+                if error_response is not None:
+                    try:
+                        error_payload = error_response.json()
+                        if isinstance(error_payload, dict):
+                            detail = (
+                                error_payload.get("detail")
+                                or error_payload.get("message")
+                                or error_payload.get("error")
+                            )
+                            if isinstance(detail, dict):
+                                detail = detail.get("message") or detail.get("detail")
+                            if detail:
+                                provider_detail = f" Details: {str(detail)[:240]}"
+                    except (ValueError, requests.exceptions.JSONDecodeError):
+                        pass
+                st.session_state.channel3_error = (
+                    f"Live product search is unavailable right now{suffix}.{provider_detail} "
+                    "You can still browse the sample catalogue below."
+                )
+            except (KeyError, ValueError):
+                st.session_state.channel3_error = (
+                    "Channel3 returned a response ShopMate could not read. "
+                    "You can still browse the sample catalogue below."
+                )
+
+    if st.session_state.channel3_error:
+        st.warning(st.session_state.channel3_error)
+
+    if st.session_state.channel3_results is not None:
+        live_products = st.session_state.channel3_results
+        if not live_products:
+            st.info("No live matches found. Try a broader search.")
+        else:
+            st.caption(
+                f"{len(live_products)} live matches · Prices and availability can change."
+            )
+            live_columns = st.columns(3)
+            for index, product in enumerate(live_products):
+                with live_columns[index % 3]:
+                    with st.container(border=True):
+                        images = product.get("images") or []
+                        if images:
+                            image_url = images[0].get("cleaned_url") or images[0].get("url")
+                            if image_url:
+                                st.image(image_url, use_container_width=True)
+
+                        brands = product.get("brands") or []
+                        brand_name = brands[0].get("name") if brands else None
+                        if brand_name:
+                            st.caption(brand_name)
+                        st.subheader(product.get("title", "Product"))
+
+                        offer = best_channel3_offer(product)
+                        if offer:
+                            offer_currency = str(
+                                (offer.get("price") or {}).get("currency", "")
+                            ).upper()
+                            offer_amount = (offer.get("price") or {}).get("price")
+                            if offer_currency == "USD" and offer_amount is not None:
+                                try:
+                                    usd_inr_rate, rate_date = get_usd_inr_reference_rate()
+                                    approx_inr = float(offer_amount) * usd_inr_rate
+                                    st.markdown(f"### ≈ ₹{approx_inr:,.0f}")
+                                    date_label = f" ({rate_date})" if rate_date else ""
+                                    st.caption(
+                                        f"Retailer price: {format_channel3_price(offer)} · "
+                                        f"estimated at the USD/INR reference rate{date_label}"
+                                    )
+                                except (requests.RequestException, KeyError, TypeError, ValueError):
+                                    st.markdown(f"### {format_channel3_price(offer)}")
+                                    st.caption("Rupee estimate unavailable; showing the retailer's listed price.")
+                            else:
+                                st.markdown(f"### {format_channel3_price(offer)}")
+                            st.caption(
+                                f'{offer.get("domain", "Retailer")} · '
+                                f'{offer.get("availability", "Availability varies")}'
+                            )
+                            st.link_button(
+                                "View retailer offer",
+                                offer["url"],
+                                use_container_width=True
+                            )
+                        else:
+                            st.caption("Retailer pricing is not available for this result.")
+
+            st.caption(
+                "Live products and tracked retailer links are provided by Channel3. "
+                "They are separate from the PayPal Sandbox cart."
+            )
+
 # --------------------------------------------------
-# 9. EXPLORE PRODUCTS
+# 9. EXPLORE SAMPLE CATALOGUE
 # --------------------------------------------------
 
 st.divider()
 
-st.header("Explore Products")
+st.markdown('<p class="section-kicker">03 · Curated sample catalogue</p>', unsafe_allow_html=True)
+st.header("Explore the sample catalogue")
 
 search_query = st.text_input(
     "Search products",
@@ -1222,6 +1604,13 @@ if filtered_products:
         with cols[index % 3]:
 
             with st.container(border=True):
+
+                st.markdown(
+                    '<div class="sample-product-visual">'
+                    f'<span>{product_icon(product)}</span>'
+                    f'<small>{product["category"]}</small></div>',
+                    unsafe_allow_html=True
+                )
 
                 st.subheader(product["name"])
 
