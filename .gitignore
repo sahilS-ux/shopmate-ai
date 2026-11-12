@@ -1,27 +1,32 @@
 # Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-.Python
+*$py.class
 
 # Virtual environments
 .venv/
 venv/
 env/
 
-# Streamlit secrets and local configuration
-.streamlit/secrets.toml
-
-# Environment variables
+# Local secrets and environment files
 .env
 .env.*
+!.env.example
+.streamlit/secrets.toml
 
-# Local PayPal order snapshots
+# Local runtime and payment state
 pending_paypal_orders/
+products_backup.json
 
-# Editor and OS files
-.vscode/
-.idea/
+# One-off manual API probes (use a proper test suite for repeatable checks)
+test_gemini.py
+test_paypal.py
+test_paypal_capture.py
+test_paypal_order.py
+
+# Tooling and OS files
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .DS_Store
 Thumbs.db
