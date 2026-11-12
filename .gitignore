@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
+*.egg
+dist/
+build/
 
 # Virtual environments
 .venv/
@@ -23,6 +27,13 @@ test_gemini.py
 test_paypal.py
 test_paypal_capture.py
 test_paypal_order.py
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # Tooling and OS files
 .pytest_cache/

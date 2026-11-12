@@ -47,13 +47,13 @@
 
 ## 1:43–2:18 — Cart and payment demonstration
 
-**Picture:** Add a sample-catalogue item to the cart. Show the INR cart total and the checkout disclosure. Briefly show the PayPal Sandbox approval, then the app’s confirmation and receipt. Keep buyer details out of frame.
+**Picture:** Add a sample-catalogue item to the cart. Show the INR cart total and the checkout summary with the live USD conversion. Briefly show the itemized PayPal Sandbox approval page, then the app’s confirmation and receipt showing both INR and USD totals. Keep buyer details out of frame.
 
 **Voiceover:**  
-“I can add a catalogue item to my cart and review its INR total. Then I can try the PayPal Sandbox checkout. This prototype sends a fixed one-dollar US Sandbox payment; it does not charge the cart total, and no real money is charged. After approval, ShopMate verifies the order and shows a receipt.”
+“I can add a catalogue item to my cart and review its INR total. At checkout, ShopMate converts the cart to US dollars at a live daily rate and sends each product as a line item to PayPal. On the Sandbox approval page, the buyer sees the full itemized order. After approval, ShopMate captures the payment and shows a receipt with both the rupee and dollar totals. No real money is charged.”
 
 **On-screen disclosure:**  
-“PayPal Sandbox demo · Fixed $1 USD payment · No real money charged”
+“PayPal Sandbox demo · No real money charged”
 
 ## 2:18–2:40 — Close
 
@@ -72,5 +72,5 @@
 - Use the live app and real results; do not stage or fabricate API responses.
 - Keep the Gemini, Channel3, and PayPal credentials off-screen.
 - Preserve the USD price next to every approximate rupee conversion.
-- Keep the fixed $1 Sandbox disclosure visible in the checkout segment.
+- Keep the Sandbox disclosure visible in the checkout segment.
 - Upload the finished video publicly to YouTube and enable embedding before adding its link to Devpost.
