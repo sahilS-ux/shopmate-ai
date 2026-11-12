@@ -1,149 +1,127 @@
 # ShopMate AI
 
-**An AI-powered shopping assistant that helps users find products, compare options, build a cart, and experience a PayPal checkout flow.**
+**A conversational shopping assistant that turns a product brief into a shortlist, compares live retailer offers, and demonstrates a PayPal Sandbox checkout.**
 
-🌐 **Live demo:** https://shopmate-ai-sahil.streamlit.app  
-💻 **Source code:** https://github.com/sahilS-ux/shopmate-ai
+- **Live demo:** https://shopmate-ai-sahil.streamlit.app
+- **Source:** https://github.com/sahilS-ux/shopmate-ai
 
-ShopMate AI is a hackathon prototype built with Python and Streamlit. A user describes what they need in natural language; Gemini extracts the shopping requirements, the app filters its sample product catalogue, and Gemini helps select a suitable match. Users can also browse the catalogue, add products to a cart, and complete a PayPal Sandbox checkout demonstration.
+ShopMate AI is a hackathon prototype for shoppers who want help narrowing down choices. Describe what you need in everyday language. Gemini extracts requirements and recommends an item from the sample catalogue. Channel3 can search live products and retailer offers. A demo cart can be checked out through PayPal Sandbox.
 
-> **Payment demo notice:** Checkout currently creates a fixed **$1.00 USD PayPal Sandbox payment**. It does not charge the INR cart total. Product prices and the cart total are illustrative catalogue values. Sandbox payments do not move real money.
+> **Payment demo:** PayPal checkout currently charges a fixed **$1.00 USD Sandbox payment**, regardless of the sample cart’s INR total. This is not a real purchase, and Sandbox does not move real money.
 
 ## Features
 
-- **Natural-language shopping requests:** Describe a product, budget, brand preference, or minimum specifications in everyday language.
-- **AI requirement extraction:** Gemini converts the request into structured fields such as category, product type, brand, maximum budget, RAM, and storage.
-- **Catalogue matching:** Python filters the local sample catalogue against the extracted requirements.
-- **AI-assisted recommendation:** Gemini compares the matching catalogue entries and selects a recommendation using the supplied product data.
-- **Product exploration:** Search the catalogue and browse by category.
-- **Shopping cart:** Add products, review quantities and subtotals, and remove items.
-- **PayPal Sandbox checkout:** Create a PayPal order, redirect the buyer to PayPal for approval, verify the returned order, and capture the payment.
-- **Payment receipt:** Display the PayPal order ID, capture ID, Sandbox payment status, and a summary of the cart.
+- **Natural-language product brief:** Enter a product type, budget, preferred brand, and specifications.
+- **AI requirement extraction:** Gemini turns the brief into structured shopping requirements.
+- **Catalogue recommendations:** ShopMate filters the local sample catalogue and asks Gemini to select a suitable match from those results.
+- **Live product discovery:** Search Channel3 for product listings, images, retailer offers, and buy links.
+- **Rupee comparison:** USD offers show an approximate INR equivalent using a cached daily reference rate. The original retailer price remains visible.
+- **Sample catalogue and cart:** Browse the INR demo catalogue, add items, and review quantities and subtotals.
+- **PayPal payment demonstration:** Create and approve a Sandbox order, verify it with PayPal, capture it, and show a receipt.
 
-## Technology stack
+## How a shopping session works
 
-| Technology | Purpose |
+1. Enter a natural-language shopping request.
+2. Gemini extracts requirements such as category, budget, brand, RAM, and storage.
+3. ShopMate filters the products.json catalogue using those requirements.
+4. Gemini recommends an item from the matching catalogue products and explains the choice.
+5. Optionally search Channel3 for live products and retailer offers. Channel3 uses its default US/USD market in this app; the rupee figure is an estimate for comparison, not the retailer's checkout price. Shipping and taxes may differ.
+6. Add sample-catalogue products to the cart.
+7. PayPal Sandbox processes the fixed $1.00 USD demo payment and ShopMate shows a receipt for the sample cart.
+
+Channel3 live listings are separate from the sample cart and PayPal Sandbox checkout.
+
+## Technology
+
+| Technology | Role |
 |---|---|
-| Python | Application logic and integrations |
-| Streamlit | Web application interface and session state |
-| Google Gemini API (gemini-2.5-flash) | Extract shopping requirements and explain product recommendations |
-| PayPal REST API (Sandbox) | Create, approve, verify, and capture the demo checkout |
-| JSON | Store the sample product catalogue and pending cart snapshots |
-| requests | Send HTTP requests to PayPal |
-
-## How it works
-
-1. The user enters a shopping request, for example: “Find a laptop under ₹60,000 with at least 16GB RAM and 512GB storage.”
-2. Gemini returns structured shopping requirements in JSON.
-3. The Python application validates the extracted category and brand, then filters products.json using the budget and available specifications.
-4. Gemini receives only the matching catalogue entries and selects a recommendation with an explanation. The app validates that the selected product ID belongs to the matching results.
-5. The user adds products to the cart and proceeds to checkout.
-6. The app creates a **$1.00 USD Sandbox order** through the PayPal REST API and sends the buyer to PayPal to approve it.
-7. When the buyer returns, the app retrieves the order from PayPal, checks the expected intent, amount, and description, and captures the order if it is approved.
-8. The app checks for a completed capture, then displays the receipt and clears the cart.
+| Python | Application logic and API integrations |
+| Streamlit | Web interface and session state |
+| Google Gemini API, gemini-2.5-flash | Extract requirements and recommend a catalogue match |
+| Channel3 API | Live product search and retailer offers |
+| PayPal REST API, Sandbox | Create, verify, and capture the demo payment |
+| Frankfurter API | Daily USD/INR reference rate for approximate display conversion |
+| JSON | Sample product catalogue and pending checkout cart snapshot |
+| requests | HTTP calls to external APIs |
 
 ## Run locally
 
 ### 1. Clone the repository
 
-~~~bash
-git clone https://github.com/sahilS-ux/shopmate-ai.git
-cd shopmate-ai
-~~~
+    git clone https://github.com/sahilS-ux/shopmate-ai.git
+    cd shopmate-ai
 
 ### 2. Create and activate a virtual environment
 
-**Linux / macOS:**
+**Linux / macOS**
 
-~~~bash
-python3 -m venv .venv
-source .venv/bin/activate
-~~~
+    python3 -m venv .venv
+    source .venv/bin/activate
 
-**Windows PowerShell:**
+**Windows PowerShell**
 
-~~~powershell
-py -m venv .venv
-.venv\Scripts\Activate.ps1
-~~~
+    py -m venv .venv
+    .venv\Scripts\Activate.ps1
 
 ### 3. Install dependencies
 
-~~~bash
-pip install -r requirements.txt
-~~~
+    pip install -r requirements.txt
 
-### 4. Configure API credentials
+### 4. Configure credentials
 
-Create a folder named .streamlit in the project directory, then create a file named secrets.toml inside it.
+Copy .streamlit/secrets.toml.example to .streamlit/secrets.toml, then replace the placeholders with your own credentials:
 
-Add your own credentials using this structure:
+    GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
+    CHANNEL3_API_KEY = "YOUR_CHANNEL3_API_KEY"
 
-~~~toml
-GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
+    [paypal]
+    client_id = "YOUR_PAYPAL_SANDBOX_CLIENT_ID"
+    client_secret = "YOUR_PAYPAL_SANDBOX_CLIENT_SECRET"
+    base_url = "https://api-m.sandbox.paypal.com"
 
-[paypal]
-client_id = "YOUR_PAYPAL_SANDBOX_CLIENT_ID"
-client_secret = "YOUR_PAYPAL_SANDBOX_CLIENT_SECRET"
-base_url = "https://api-m.sandbox.paypal.com"
-~~~
+The Channel3 key enables live search. The Gemini and PayPal Sandbox credentials enable AI recommendations and the payment demo. Frankfurter does not require a key; if its rate endpoint is unavailable, live offers remain visible in their listed currency.
 
-Replace the placeholders with your own Gemini API key and PayPal **Sandbox** app credentials.
+**Never commit .streamlit/secrets.toml, API keys, PayPal client secrets, or .env files.** The repository's .gitignore excludes local secrets.
 
-**Keep credentials private.** Never commit .streamlit/secrets.toml, API keys, PayPal client secrets, or .env files to GitHub. The repository's .gitignore excludes local secrets.
+### 5. Start ShopMate
 
-### 5. Start the application
+    streamlit run app.py
 
-~~~bash
-streamlit run app.py
-~~~
+Open the local URL printed by Streamlit, usually http://localhost:8501.
 
-Streamlit will print a local address (usually http://localhost:8501) that you can open in your browser.
+## Deploy on Streamlit Community Cloud
 
-## PayPal Sandbox testing
+The public demo is hosted at https://shopmate-ai-sahil.streamlit.app.
 
-- Use PayPal Developer Sandbox credentials and a Sandbox buyer account.
-- The current demo checkout amount is always **$1.00 USD**, regardless of the products or INR total in the cart.
-- The app displays the INR cart total as an illustrative product total; it is not the amount sent to PayPal.
-- A Sandbox payment is a test transaction and does not charge real money.
-- Do not use Live PayPal credentials for this prototype.
+For a new deployment, select this GitHub repository, the main branch, and app.py as the entrypoint. Add the credential TOML in the app's **Settings → Secrets** area. For an existing deployment connected to this repository, commits to its configured branch trigger an update.
 
-## Deployment
+Local .streamlit/secrets.toml is not sent to Streamlit Cloud or GitHub. Configure local and deployed secrets separately.
 
-The current public Streamlit Community Cloud deployment is:
+## Repository layout
 
-**https://shopmate-ai-sahil.streamlit.app**
+    shopmate-ai/
+    ├── app.py
+    ├── products.json
+    ├── requirements.txt
+    ├── .streamlit/
+    │   └── secrets.toml.example
+    └── .gitignore
 
-The deployed app uses Streamlit's Secrets settings for the Gemini and PayPal Sandbox credentials. Do not put secrets in source code or the public repository.
-
-## Project structure
-
-~~~text
-shopmate-ai/
-├── app.py                 # Streamlit application, Gemini and PayPal logic
-├── products.json          # Sample product catalogue
-├── requirements.txt       # Python dependencies
-├── README.md              # Project documentation
-└── .gitignore             # Excludes local secrets and generated files
-~~~
-
-At runtime, the app also creates a pending_paypal_orders/ folder to store a cart snapshot while a Sandbox order is awaiting the buyer's return.
+During checkout, the app writes a pending cart snapshot under pending_paypal_orders/. This folder is excluded from Git.
 
 ## Prototype scope and limitations
 
-- This is a hackathon prototype, not a production e-commerce platform.
-- Product listings, specifications, and prices come from a sample JSON catalogue; the app does not fetch live inventory or market prices.
-- PayPal checkout is a fixed-value Sandbox demonstration, not a real purchase of the cart contents.
-- Pending cart snapshots are currently stored as local files. A production deployment should use durable shared storage and a more robust order database before relying on this flow at scale.
-- API availability, quotas, and Sandbox account configuration can affect external service calls.
+- The catalogue in products.json is illustrative; it is not a live inventory feed.
+- Channel3 currently returns its default US/USD market in this integration. The approximate INR display uses a daily reference exchange rate and is not a quote or a promise that a retailer ships to India.
+- The displayed sample-cart total in INR is not sent to PayPal. PayPal receives a fixed $1.00 USD Sandbox order.
+- The PayPal transaction is a test and does not charge real money.
+- Pending checkout snapshots are stored as local files. A production application should use durable shared storage and a transactional order database.
+- Product prices, availability, API behavior, and quotas can change.
 
-## Security notes
+## PayPal AI Hackathon demo
 
-- Keep Gemini and PayPal credentials in Streamlit Secrets or a local secrets file that is excluded from version control.
-- Use Sandbox credentials for testing.
-- Never publish buyer credentials, client secrets, access tokens, or private keys.
-- Do not treat the demo receipt as proof of a real-money transaction.
+For the Devpost entry, include the public demo URL, this public source repository, and a public YouTube walkthrough under three minutes. A clear walkthrough can show the request, AI recommendation, Channel3 results with the approximate rupee display, cart, and PayPal Sandbox confirmation. Keep the fixed $1 Sandbox payment disclosure visible.
 
----
+## License
 
-Built as a PayPal hackathon project: **ShopMate AI — Intelligent Shopping, Simplified.**
+This project is released under the MIT License. See LICENSE.
